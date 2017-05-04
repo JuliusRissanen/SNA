@@ -1,0 +1,39 @@
+---
+title: "Network analysis - Final Project"
+author: "Julius Rissanen"
+date: "4 toukokuuta 2017"
+output: html_document
+---
+```{r, message =F}
+library(igraph)
+library(dplyr)
+```
+
+```{r}
+
+setwd("C:/Users/Julius/yliopisto/kansis/datascience/network_analysis/final-project/SNA/")
+
+bank <- read.csv("immediaterisk_clean.csv", sep = ";", dec = ",", row.names = 1)
+head(bank, n=2)
+str(bank)
+
+keep_columns <- c("Austria", "Belgium", "Finland", "France", "Germany", "Greece", "Ireland", "Italy", "Netherlands","Spain")
+bank_eu <- select(bank, one_of(keep_columns))
+bank_eu <- bank_eu[c(2,3,8,9,10,11,12,13,17,19),]
+bank[is.na(bank)] <- 0
+bank_eu[is.na(bank_eu)] <- 0
+
+matrix_eu <- as.matrix(bank_eu)
+matrix <- as.matrix(bank)
+
+
+g <- graph_from_adjacency_matrix(matrix, 'directed',  weighted = T)
+g_eu <- graph_from_adjacency_matrix(matrix_eu, 'directed',  weighted = T)
+
+plot(g, edge.width = log(graph.strength(g)*0.001), edge.arrow.mode = 0, layout = layout_with_fr)
+
+plot(g_eu, edge.width = log(E(g_eu)$weight*0.04), edge.arrow.mode = 0)
+```
+
+
+http://kateto.net/networks-r-igraph
