@@ -21,6 +21,8 @@ http://www.elibrary.imf.org/staticfiles/misc/toolkit/pdf/chap13.pdf
 http://www.bankofengland.co.uk/research/Documents/ccbs/whfs16/presentation_rajagopal.pdf
 https://www.ecb.europa.eu/pub/pdf/other/modellingsystemicrisk012010en.pdf
 
+http://www.sciencedirect.com/science/article/pii/S1572308913000193
+
 #Dataset
 
 Problematic for individual
