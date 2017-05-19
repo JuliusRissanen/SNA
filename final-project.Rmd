@@ -1,9 +1,11 @@
 ---
-title: "Network analysis - Final Project"
+title: "Network analysis - Final Project sketch"
 author: "Julius Rissanen"
 date: "4 toukokuuta 2017"
 output: html_document
 ---
+
+
 #1. Financial stability
 
 
@@ -13,7 +15,7 @@ Traditional stress testing based on simulation on different scenarios. Commonpla
 
 "A stress test, in financial terminology, is an analysis or simulation designed to determine the ability of a given financial instrument or financial institution to deal with an economic crisis. Instead of doing financial projection on a "best estimate" basis, a company or its regulators may do stress testing where they look at how robust a financial instrument is in certain crashes, a form of scenario analysis." -Wikipedia
 
-Only microprudential analysis. Macroprudential analysis? -> Network analysis
+So far only microprudential analysis. Macroprudential analysis? -> Network analysis
 
 ##1.1 Some literature
 
@@ -25,14 +27,14 @@ http://www.sciencedirect.com/science/article/pii/S1572308913000193
 
 #2. Dataset
 
-Open data problematic for individuals
+Open data problematic for individuals on bank level.
 
-->Access only for aggregates (will work for this course):
+->Access only for country aggregates (will work for this course):
 http://stats.bis.org/statx/srs/table/b4
 
 #3. Analysis
 
-```{r, message =F}
+```{r, message =F, warning = F, error = F}
 set.seed(1)
 library(igraph)
 library(dplyr)
@@ -40,29 +42,33 @@ library(GGally)
 library(Hmisc)
 ```
 
-```{r}
+```{r, error = F}
 
 setwd("C:/Users/Julius/yliopisto/kansis/datascience/network_analysis/final-project/SNA/")
 
 
 bank <- read.csv("immediaterisk_clean.csv", sep = ";", dec = ",", row.names = 1)
 str(bank)
-bank
 
-
+#Eu subset
 keep_columns <- c("Austria", "Belgium", "Finland", "France", "Germany", "Greece", "Ireland", "Italy", "Netherlands","Spain")
 bank_eu <- select(bank, one_of(keep_columns))
 bank_eu <- bank_eu[c(2,3,8,9,10,11,12,13,17,19),]
 
+#NA values to 0 from both datasets
 bank[is.na(bank)] <- 0
 bank_eu[is.na(bank_eu)] <- 0
 
+#dataframe to matrix
 matrix <- as.matrix(bank)
 matrix_eu <- as.matrix(bank_eu)
 
+#create 'Igraph' network object
 g <- graph_from_adjacency_matrix(matrix, 'directed',  weighted = T)
 g_eu <- graph_from_adjacency_matrix(matrix_eu, 'directed',  weighted = T)
 
+
+#plotting tests
 plot(g, edge.width = sqrt(E(g)$weight*0.0001), edge.arrow.mode = 0, layout = layout_with_dh)
 
 plot(g, edge.width = sqrt(E(g)$weight*0.0001), edge.arrow.mode = 0, layout = layout_with_kk)
